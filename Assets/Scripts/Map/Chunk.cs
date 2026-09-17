@@ -21,18 +21,13 @@ namespace MapSpace
 			data.Trees = new List<GameObject>();
 		}
 
-		public static Vector2Int GetSize() { return ChunkData.Size; }
+		public static Vector2Int GetSize() => ChunkData.Size;
 
-		public static Vector2Int GetChunkMapPos(Vector3 world_pos)
-		{
-			var mapPos = Map.WorldToMapWithCut(world_pos);
-			return GetMapPos(mapPos);
-		}
+		public static Vector2Int GetChunkMapPos(Vector3 world_pos) => GetMapPos(Map.WorldToMapWithCut(world_pos));
 
-		public static Vector2Int GetChunkMapPos(Vector2Int map_pos)
-		{ return GetMapPos(map_pos); }
+		public static Vector2Int GetChunkMapPos(Vector2Int map_pos) => GetMapPos(map_pos);
 
-		public bool IsEnabled() { return data.IsEnabled; }
+		public bool IsEnabled() => data.IsEnabled;
 
 		/// <summary>
 		/// Takes any map position and returns which chunk does it belong to

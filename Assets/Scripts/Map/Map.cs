@@ -75,11 +75,8 @@ namespace MapSpace
 		/// <param name="mapName"></param>
 		/// <param name="pos"></param>
 		/// <returns>Returns team's ID or higher number for basic cells (starting from 4)</returns>
-		public static int GetCellTeamID(MapNames mapName, MapCoord pos)
-		{
-			//Debug.Log($"Type: {_Maps[(int)mapName][pos.x, pos.y]}\tTypeNum: {(int)(_Maps[(int)mapName][pos.x, pos.y])}\tTID: {GetCellTeamNum(_Maps[(int)mapName][pos.x, pos.y])}");
-			return GetCellTeamNum(MapData.Layers[(int)mapName][pos.x, pos.y]);
-		}
+		public static int GetCellTeamID(MapNames mapName, MapCoord pos) 
+			=> GetCellTeamNum(MapData.Layers[(int)mapName][pos.x, pos.y]);
 
 		public static bool IsBuilding(MapCoord pos)
 		{
@@ -286,9 +283,9 @@ namespace MapSpace
 			{
 				var curCell = queue.Dequeue();
 
-				foreach (var dir in dirs)
+				for (int i = 0; i < dirs.Count; i++)
 				{
-					var nxtCellPos = curCell + dir;
+					var nxtCellPos = curCell + dirs[i];
 
 					if (!IsOutOfMap(nxtCellPos) && visited.Add(nxtCellPos))
 					{
@@ -408,16 +405,10 @@ namespace MapSpace
 		}
 
 		public static bool IsOutOfMap(MapCoord mapCoord)
-		{
-			return !(mapCoord.x < MapData.MapSize[0] && mapCoord.x >= 0
-				 && mapCoord.y < MapData.MapSize[1] && mapCoord.y >= 0);
-		}
+		=> !(mapCoord.x < MapData.MapSize[0] && mapCoord.x >= 0
+			&& mapCoord.y < MapData.MapSize[1] && mapCoord.y >= 0);
 
-		public static bool IsOutOfMap(Vector3 coord)
-		{
-			var mapCoord = WorldToMap(new Vector3(coord.x, 0, coord.z));
-			return IsOutOfMap(mapCoord);
-		}
+		public static bool IsOutOfMap(Vector3 coord) => IsOutOfMap(WorldToMap(new Vector3(coord.x, 0, coord.z)));
 
 		/// <summary>
 		/// Convert map index to world position (vertex of the cell)
@@ -425,17 +416,13 @@ namespace MapSpace
 		/// <param name="x"></param>
 		/// <param name="y"></param>
 		/// <returns>World position</returns>
-		public static Vector3 MapToWorld(int x, int y)
-		{ return data.MapStart + new Vector3(x, 0, y); }
+		public static Vector3 MapToWorld(int x, int y) => data.MapStart + new Vector3(x, 0, y);
 
-		public static Vector3 MapToWorld(MapCoord map_pos)
-		{ return data.MapStart + new Vector3(map_pos.x, 0, map_pos.y); }
+		public static Vector3 MapToWorld(MapCoord map_pos) => data.MapStart + new Vector3(map_pos.x, 0, map_pos.y);
 
-		public static Vector3 GetCellSize()
-		{ return data.CellSize; }
+		public static Vector3 GetCellSize() => data.CellSize;
 
-		public static Vector2Int GetSize()
-		{ return MapData.MapSize; }
+		public static Vector2Int GetSize() => MapData.MapSize;
 
 		/// <summary>
 		/// Convert world position to map index

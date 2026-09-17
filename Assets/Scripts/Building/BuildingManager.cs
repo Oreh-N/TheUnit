@@ -42,7 +42,7 @@ public class BuildingManager : MonoBehaviour
 	{
 		var obj = Creator.CreateBuilding(obj_, pos);
 		if (obj.GetComponent<ITeamMember>() != null)
-		{ obj.GetComponent<ITeamMember>().SetTeam(t.GetID()); }
+		{ obj.GetComponent<ITeamMember>().SetTeam(t.GetTeamID()); }
 		return obj;
 	}
 
@@ -73,13 +73,13 @@ public class BuildingManager : MonoBehaviour
 
 	public void MoveLoot(ILootContainer from, ILootContainer to, List<LootType> content)
 	{
-		ILootContainer.MoveSpecificLoot(from.GetInventory(), to.GetInventory(), content);
+		ILootContainer.MoveSpecificLoot(from.GetTeamInventory(), to.GetTeamInventory(), content);
 	}
 
 
 	public static string GetTeamName(int teamID)
 	{
-		return GetTeam(teamID).GetName();
+		return GetTeam(teamID).GetTeamName();
 	}
 
 	public static Team GetTeam(int teamID)

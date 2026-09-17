@@ -43,7 +43,7 @@ public class MainBuilding : Building, ILootContainer
 
 
 
-	public Inventory GetInventory()
+	public Inventory GetTeamInventory()
 	{
 		return LootCounter;
 	}

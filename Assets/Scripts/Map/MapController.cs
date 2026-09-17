@@ -49,8 +49,8 @@ public class MapController : MonoBehaviour, IMouseListener {
 	{
 		if (!build || Map.IsOutOfMap(build.transform.position) || !MainController.Instance.Ready) return false;
 		int teamID = build.GetTeamID();
-		Vector3 center = MainController.Instance.GetTeam(teamID).GetCenter();
-		float radius = MainController.Instance.GetTeam(teamID).GetBuildingRadius();
+		Vector3 center = MainController.Instance.GetTeam(teamID).GetTeamCenter();
+		float radius = MainController.Instance.GetTeam(teamID).GetTeamBuildingRadius();
 		var mapPos = Map.WorldToMap(build.transform.position);
 		if (Vector3.Distance(build.transform.position, center) > radius ||
 			!Map.SquareAreaInAllMapsIs(Map.CellType.Empty, mapPos, build.GetSize()))
@@ -100,7 +100,7 @@ public class MapController : MonoBehaviour, IMouseListener {
 	public void PlaceBuilding(Building b, Team t)
 	{
 		if (!t || !b) return;
-		b.SetTeam(t.GetID());
+		b.SetTeam(t.GetTeamID());
 		b.Construct();
 		data.CurrBuilding = null;
 		data.AllowBuilding = false;

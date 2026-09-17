@@ -1,5 +1,6 @@
 using MapSpace;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class MainController : MonoBehaviour
@@ -75,7 +76,7 @@ public class MainController : MonoBehaviour
 		Ready = true;
 	}
 
-	public Team[] GetAllTeams() { return _teams; }
+	public IReadOnlyCollection<IReadOnlyTeam> GetAllTeams() => _teams;
 
 	/// <summary>
 	/// Returns team by its ID

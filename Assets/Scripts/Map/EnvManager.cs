@@ -162,14 +162,14 @@ namespace MapSpace
 			if (!MainController.Instance.Ready) return null;
 
 			var areasInfo = new Dictionary<Vector3, float>();
-			Team[] teams = MainController.Instance.GetAllTeams();
+			IReadOnlyCollection<IReadOnlyTeam> teams = MainController.Instance.GetAllTeams();
 
 			if (teams != null)
 				foreach (var t in teams)
 				{
 					if (t == null) { Debug.Log("Team is NULL"); continue; }
-					if (!areasInfo.ContainsKey(t.GetCenter()))
-						areasInfo.Add(t.GetCenter(), t.GetBuildingRadius());
+					if (!areasInfo.ContainsKey(t.GetTeamCenter()))
+						areasInfo.Add(t.GetTeamCenter(), t.GetTeamBuildingRadius());
 				}
 
 			return areasInfo;
@@ -178,12 +178,12 @@ namespace MapSpace
 
 		private void SignBuildingArea()
 		{
-			Team[] ts = MainController.Instance.GetAllTeams();
+			IReadOnlyCollection<IReadOnlyTeam> ts = MainController.Instance.GetAllTeams();
 			foreach (Team t in ts)
 			{
 				if (t == null) { Debug.Log("Team is NULL"); continue; }
-				Vector2Int coord = Map.WorldToMap(t.GetCenter());
-				int mapRadius = Mathf.RoundToInt(t.GetBuildingRadius() / Map.GetCellSize().x);
+				Vector2Int coord = Map.WorldToMap(t.GetTeamCenter());
+				int mapRadius = Mathf.RoundToInt(t.GetTeamBuildingRadius() / Map.GetCellSize().x);
 				Map.FillMapAreaCircle(coord, mapRadius, Map.CellType.BuildArea, MNames.EnvMap);
 			}
 		}

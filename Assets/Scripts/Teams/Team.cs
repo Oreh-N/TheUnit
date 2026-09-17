@@ -11,7 +11,7 @@ using static UnityEditor.PlayerSettings;
 /// <summary>
 /// Centralize data about each specific team, and contains method to control it (mining, attack)
 /// </summary>
-public abstract class Team : MonoBehaviour, ILootContainer
+public abstract class Team : MonoBehaviour, ILootContainer, IReadOnlyTeam
 {
 	public TeamData data { get; protected set; } = new TeamData();
 
@@ -90,7 +90,7 @@ public abstract class Team : MonoBehaviour, ILootContainer
 			if (build is not ILootContainer)
 			{ continue; }
 
-			foreach (var loot in ((ILootContainer)build).GetInventory()) // There might be more buildings that keeps loot
+			foreach (var loot in ((ILootContainer)build).GetTeamInventory()) // There might be more buildings that keeps loot
 			{ updInv[loot.Key] += loot.Value; }
 		}
 		data.LootCounter = updInv;
@@ -115,10 +115,6 @@ public abstract class Team : MonoBehaviour, ILootContainer
 		
 	}
 
-	// _______________________________________________________________
-
-
-	// DATA_TRANSFERRING_______________________________________________________________
 	/// <summary>
 	/// Setup team. If there are troubles (base center is out of map, etc.) then method will return false, otherwise true.
 	/// </summary>
@@ -142,6 +138,23 @@ public abstract class Team : MonoBehaviour, ILootContainer
 		data.TeamName = teamName;
 		return this;
 	}
+	// _______________________________________________________________
+
+
+
+	#region Data transfering
+
+	public string GetTeamName() => (string)data.TeamName.Clone();
+
+	public int GetTeamID() => data.ID;
+
+	public Color GetTeamColor() => data.TeamColor;
+
+	public Vector3 GetTeamCenter() => data.BaseCenter; 
+
+	public float GetTeamBuildingRadius() => data.BuildingRadius;
+
+	public Inventory GetTeamInventory() => data.LootCounter;
 
 	private T GetClosestTeamObj<T>(Vector3 pos, List<T> objList) where T : Component
 	{
@@ -158,36 +171,23 @@ public abstract class Team : MonoBehaviour, ILootContainer
 		return obj;
 	}
 
-	public Building GetClosestTeamBuild(Vector3 pos)
-	{ return GetClosestTeamObj<Building>(pos, data.Buildings); }
+	public Building GetClosestTeamBuild(Vector3 pos) => GetClosestTeamObj<Building>(pos, data.Buildings);
 
-	public Unit GetClosestTeamUnit(Vector3 pos)
-	{ return GetClosestTeamObj<Unit>(pos, data.Units); }
-
-
-	public string GetName() { return data.TeamName; }
-
-	public int GetID() { return data.ID; }
-
-	public Color GetColor() { return data.TeamColor; }
+	public Unit GetClosestTeamUnit(Vector3 pos) => GetClosestTeamObj<Unit>(pos, data.Units);
 
 	public void RegisterBuilding(Building building) 
-	{ data.Buildings.Add(building); /*Debug.Log($"Building {building.GetType()} added");*/ }
+	{ data.Buildings.Add(building); }
 
 	public void RemoveBuilding(Building building) 
-	{ data.Buildings.Remove(building); /*Debug.Log($"Building {building.GetType()} removed");*/ }
+	{ data.Buildings.Remove(building); }
 
 
 	public void RegisterUnit(Unit unit) 
-	{ data.Units.Add(unit); /*Debug.Log($"Unit {unit.GetType()} added");*/ }
+	{ data.Units.Add(unit); }
 
 	public void RemoveUnit(Unit unit) 
-	{ data.Units.Remove(unit); /*Debug.Log($"Unit {unit.GetType()} removed");*/ }
+	{ data.Units.Remove(unit); }
 
-	public Vector3 GetCenter() { return data.BaseCenter; }
-
-	public float GetBuildingRadius() { return data.BuildingRadius; }
-
-	public Inventory GetInventory() { return data.LootCounter; }
-	// _________________________________________________________________________________
+	
+	#endregion
 }

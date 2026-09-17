@@ -68,7 +68,7 @@ public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITea
 		Team t = MainController.Instance.GetTeam(data.TeamID);
 		if (!t) { Debug.Log($"Team {data.TeamID} doesn't exist!"); return; }
 		Destroy(gameObject.GetComponent<Movable>());
-		ColorBuilding(t.GetColor());
+		ColorBuilding(t.GetTeamColor());
 
 		Map.FillMapAreaSquare(Map.WorldToMap(GetPos()),
 			GetSize(), Map.CombineTeamCell(GetCellID(), GetTeamID()), Map.MapNames.EnvMap);
@@ -102,26 +102,24 @@ public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITea
 
 	#region Data transfering
 
-	public Map.CellType GetCellType() { return data.CellType; }
-	public bool IsPlaced() { return data.IsPlaced; }
+	public Map.CellType GetCellType() => data.CellType;
+	public bool IsPlaced() => data.IsPlaced;
 
-	public int GetTeamID() { return data.TeamID; }
+	public int GetTeamID() => data.TeamID;
 
-	public string GetName() { return data.Name; }
+	public string GetName() => data.Name;
 
-	public Vector2Int GetSize() { return data.Size; }
+	public Vector2Int GetSize() => data.Size;
 
 	public void SetTeam(int teamID) { data.TeamID = teamID; }
 
-	public Vector3 GetPos() { return transform.position; }
+	public Vector3 GetPos() => transform.position;
 
-	public Renderer[] GetRendererChildren() { return data.RendererChildren; }
+	public Renderer[] GetRendererChildren() => data.RendererChildren;
 
-	public UIManager.PanelNames GetPanelName()
-	{ return data.PanelName; }
+	public UIManager.PanelNames GetPanelName() => data.PanelName;
 
-	public string GetTeamName()
-	{ return BuildingManager.GetTeamName(data.TeamID); }
+	public string GetTeamName() => BuildingManager.GetTeamName(data.TeamID);
 
 	#endregion
 }

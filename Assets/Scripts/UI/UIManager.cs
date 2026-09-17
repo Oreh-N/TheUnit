@@ -53,7 +53,7 @@ public class UIManager : MonoBehaviour, IMouseListener
 			else if (obj is MainBuilding)
 			{ UpdateMainBuildPanel(obj as MainBuilding); }
 			else if (obj is Warehouse)
-			{ UpdatePanel(((Warehouse)obj).GetPanelName(), ((Warehouse)obj).GetInventory().ToString()); }
+			{ UpdatePanel(((Warehouse)obj).GetPanelName(), ((Warehouse)obj).GetTeamInventory().ToString()); }
 			else
 			{ UpdatePanel(obj); }
 		}
@@ -64,8 +64,8 @@ public class UIManager : MonoBehaviour, IMouseListener
 
 	void UpdateTopPanel()
 	{
-		UpdatePanel(PanelNames.MoneyP, data.FollowedTeam.GetInventory()[LootType.Gold].ToString());
-		UpdatePanel(PanelNames.WoodP, data.FollowedTeam.GetInventory()[LootType.Wood].ToString());
+		UpdatePanel(PanelNames.MoneyP, data.FollowedTeam.GetTeamInventory()[LootType.Gold].ToString());
+		UpdatePanel(PanelNames.WoodP, data.FollowedTeam.GetTeamInventory()[LootType.Wood].ToString());
 	}
 
 	void Setup()
@@ -113,7 +113,7 @@ public class UIManager : MonoBehaviour, IMouseListener
 		{
 			var prefab = Prefabs.NameToPrefab(button.name);
 			button.GetComponent<Button>().onClick.AddListener(() => MapController.Instance.SpawnMovableBuild
-			(prefab, Player.Instance.GetID()));
+			(prefab, Player.Instance.GetTeamID()));
 		}
 	}
 
@@ -167,13 +167,13 @@ public class UIManager : MonoBehaviour, IMouseListener
 	public void UpdateUnitPanel(Unit unit)
 	{
 		UpdatePanel(PanelNames.UnitP, $"Name: {unit.GetName()}\n" +
-			$"Team: {unit.GetTeamName()}\nBag: {unit.GetInventory().ToString()}");
+			$"Team: {unit.GetTeamName()}\nBag: {unit.GetTeamInventory().ToString()}");
 	}
 
 	public void UpdateMainBuildPanel(MainBuilding build)
 	{
 		string text = "";
-		text = $"{build.GetName()}\nTeam: {build.GetTeamName()}\nHealth: NO\nBag: {build.GetInventory()}";
+		text = $"{build.GetName()}\nTeam: {build.GetTeamName()}\nHealth: NO\nBag: {build.GetTeamInventory()}";
 		UpdatePanel(build.GetPanelName(), text);
 	}
 

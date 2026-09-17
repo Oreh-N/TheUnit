@@ -38,7 +38,7 @@ public class Warehouse : Building, ILootContainer
 
 
 
-	public Inventory GetInventory()
+	public Inventory GetTeamInventory()
 	{
 		return LootCounter;
 	}

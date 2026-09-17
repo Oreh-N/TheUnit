@@ -54,7 +54,7 @@ public abstract class Unit : MonoBehaviour, ILootContainer, IHavePanel, ITeamMem
 	}
 
 	public MapSpace.Map.CellType GetUnitCellID()
-	{ return (MapSpace.Map.CellType)(data.TeamID * 100 + (int)data.CellType); }
+	=> (MapSpace.Map.CellType)(data.TeamID * 100 + (int)data.CellType);
 
 	public abstract void Interact();
 
@@ -69,26 +69,20 @@ public abstract class Unit : MonoBehaviour, ILootContainer, IHavePanel, ITeamMem
 	{ data.Health -= damage; }
 
 	// _________________________________________________________________
-	public int GetTeamID()
-	{ return data.TeamID; }
+	public int GetTeamID() => data.TeamID;
 
-	public MapSpace.Map.CellType GetCellType()
-	{ return data.CellType; }
+	public MapSpace.Map.CellType GetCellType() => data.CellType;
 
-	public Inventory GetInventory()
-	{ return data.LootCounter; }
+	public Inventory GetTeamInventory() => data.LootCounter;
 
 	public void SetTeam(int teamID)
 	{ data.TeamID = teamID; }
 
-	public string GetTeamName()
-	{ return UnitManager.GetTeamName(data.TeamID); }
+	public string GetTeamName() => UnitManager.GetTeamName(data.TeamID);
 
-	public UIManager.PanelNames GetPanelName()
-	{ return data.PanelName; }
+	public UIManager.PanelNames GetPanelName() => data.PanelName;
 
-	public string GetName()
-	{ return data.Name; }
+	public string GetName() => data.Name;
 }
 
 public abstract class UnitSelf<TSelf> : Unit where TSelf : Unit { }

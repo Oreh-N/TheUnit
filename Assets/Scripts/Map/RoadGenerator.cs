@@ -22,11 +22,11 @@ namespace MapSpace
 		public static void GenRoadsBetweenAllTeams(Vector2Int map_size)
 		{
 			var mapCenter = new Vector2Int(map_size.x / 2, map_size.y / 2);
-			Team[] ts = MainController.Instance.GetAllTeams();
-			for (int i = 0; i < ts.Length; i++)
+			IReadOnlyCollection<IReadOnlyTeam> ts = MainController.Instance.GetAllTeams();
+			foreach (var t in ts)
 			{
-				if (ts[i] == null) continue;
-				var baseCenter = new Vector2Int((int)ts[i].GetCenter().x, (int)ts[i].GetCenter().z);
+				if (t == null) continue;
+				var baseCenter = new Vector2Int((int)t.GetTeamCenter().x, (int)t.GetTeamCenter().z);
 				SignRoadOnMap(baseCenter, mapCenter);
 			}
 		}

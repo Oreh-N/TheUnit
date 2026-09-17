@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(BoxCollider))]
+
 public class TreeScript : LootHolder, IMyPlaceableOnMap
 {
 	public Vector3 GetPos()

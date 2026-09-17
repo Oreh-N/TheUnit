@@ -12,7 +12,7 @@ public static class UnitManager
 	public static string GetTeamName(int teamID)
 	{
 		Team t = GetTeam(teamID);
-		if (t) return t.GetName();
+		if (t) return t.GetTeamName();
 		return "";
 	}
 	public static Team GetTeam(int teamID)
@@ -36,7 +36,7 @@ public static class UnitManager
 
 	public static int GetPlayerTeamID()
 	{
-		return Player.Instance.GetID();
+		return Player.Instance.GetTeamID();
 	}
 	// __________________________________________________________________________________
 	public static void HitUnit(Unit injuredUnit, int damage)

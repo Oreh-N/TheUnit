@@ -33,13 +33,13 @@ public abstract class LootHolder : MonoBehaviour, ILootContainer
 		if (collision.collider.tag == PubNames.UnitTag)
 		{
 			var unit = collision.gameObject.GetComponent<Unit>();
-			ILootContainer.TakeAllLoot(unit.GetInventory(), LootCounter);
+			ILootContainer.TakeAllLoot(unit.GetTeamInventory(), LootCounter);
 
 			IsEmpty = true;
 		}
 	}
 
-	public Inventory GetInventory()
+	public Inventory GetTeamInventory()
 	{
 		return LootCounter;
 	}

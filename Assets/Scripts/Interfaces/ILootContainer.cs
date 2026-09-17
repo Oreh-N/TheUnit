@@ -92,5 +92,5 @@ public interface ILootContainer
 		loot.Clear();
 	}
 
-	public Inventory GetInventory();
+	public Inventory GetTeamInventory();
 }
