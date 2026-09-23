@@ -28,9 +28,4 @@ public class Player : Team
 	{
 		base.Update();
 	}
-
-	public string GetTeamName()
-	{
-		return data.TeamName;
-	}
 }

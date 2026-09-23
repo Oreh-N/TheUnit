@@ -31,7 +31,7 @@ public class MouseController : MonoBehaviour
 
 	public void RemoveListener(IMouseListener listener) { _listeners.Remove(listener); }
 
-	public void InformListeners(int mouseButt)
+	void InformListeners(int mouseButt)
 	{
 		foreach (var l in _listeners)
 		{ l.MouseHitMapAction(mouseButt); }

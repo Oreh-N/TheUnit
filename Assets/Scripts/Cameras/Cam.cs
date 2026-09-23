@@ -37,7 +37,7 @@ public class Cam : MonoBehaviour
 	/// central points of each border side.
 	/// </summary>
 	/// <returns></returns>
-	public List<Vector3> GetCamProjBorderPoints()
+	public IReadOnlyCollection<Vector3> GetCamProjBorderPoints()
 	{
 		if (_cam == null) return new List<Vector3>();
 

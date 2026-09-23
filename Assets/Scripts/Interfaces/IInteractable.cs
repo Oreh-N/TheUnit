@@ -4,7 +4,7 @@ using UnityEngine;
 
 public interface IInteractable
 {
-	public void Interact();
+	void Interact();
 
-	public virtual void MouseDownAct() { Debug.Log("Shouldn't call MouseDownAct in interface"); }
+	virtual void MouseDownAct() { Debug.Log("Shouldn't call MouseDownAct in interface"); }
 }

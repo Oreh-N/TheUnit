@@ -71,11 +71,6 @@ public class BuildingManager : MonoBehaviour
 		GetTeam(teamID).RemoveBuilding(b);
 	}
 
-	public void MoveLoot(ILootContainer from, ILootContainer to, List<LootType> content)
-	{
-		ILootContainer.MoveSpecificLoot(from.GetTeamInventory(), to.GetTeamInventory(), content);
-	}
-
 
 	public static string GetTeamName(int teamID)
 	{

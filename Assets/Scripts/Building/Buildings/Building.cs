@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 
 
-public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITeamMember, IMyPlaceableOnMap
+public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITeamMember
 {
 	protected BuildingData data = new BuildingData();
 	public HealthSystem HealthSys { get; protected set; } = new HealthSystem();

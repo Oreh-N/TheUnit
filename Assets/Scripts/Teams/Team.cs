@@ -83,7 +83,7 @@ public abstract class Team : MonoBehaviour, ILootContainer, IReadOnlyTeam
 	public void UpdateLoot()
 	{
 		Inventory updInv = new Inventory();
-		updInv.AddAllLootTypes();
+		updInv.InitInventory();
 
 		foreach (var build in data.Buildings)
 		{

@@ -68,7 +68,7 @@ namespace MapSpace
 
 		IEnumerator UpdateForestChunks(Vector3 cam_pos)
 		{
-			List<Vector3> map_border_points = _cam.GetCamProjBorderPoints();
+			IReadOnlyCollection<Vector3> map_border_points = _cam.GetCamProjBorderPoints();
 
 			float maxTime = 0.02f;
 			float startTime = Time.realtimeSinceStartup;
@@ -98,7 +98,7 @@ namespace MapSpace
 			ChunkUpdateReady = true;
 		}
 
-		void DisableOutOfViewChunks(List<Vector3> pointsInView)
+		void DisableOutOfViewChunks(IReadOnlyCollection<Vector3> pointsInView)
 		{
 			foreach (var pair in _chunks)
 			{

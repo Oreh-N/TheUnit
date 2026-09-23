@@ -30,19 +30,6 @@ public class MainBuilding : Building, ILootContainer
 		base.Update();
 	}
 
-
-	private void OnCollisionEnter(Collision collision)
-	{
-		if (collision.collider.tag == PubNames.UnitTag)
-		{
-			var unit = collision.gameObject.GetComponent<Unit>();
-			BuildingManager.Instance.MoveLoot(unit, this, _content);
-		}
-	}
-
-
-
-
 	public Inventory GetTeamInventory()
 	{
 		return LootCounter;

@@ -18,7 +18,7 @@ public class TreeScript : LootHolder, IMyPlaceableOnMap
 
 	private void Awake()
 	{
-		FillHolderFully(LootType.Wood);
+		inventory.FillFully(LootType.Wood);
 	}
 
 	private new void Update()

@@ -25,18 +25,6 @@ public class Warehouse : Building, ILootContainer
 	}
 
 
-	// Interaction____________________________________________
-	private void OnCollisionEnter(Collision collision)
-	{
-		if (collision.collider.tag == PubNames.UnitTag)
-		{
-			var unit = collision.gameObject.GetComponent<Unit>();
-			BuildingManager.Instance.MoveLoot(unit, this, _content);
-		}
-	}
-	// _______________________________________________________
-
-
 
 	public Inventory GetTeamInventory()
 	{
