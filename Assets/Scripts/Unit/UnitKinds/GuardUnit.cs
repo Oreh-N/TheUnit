@@ -8,7 +8,6 @@ public class GuardUnit : UnitSelf<GuardUnit>
 	{
 		base.Awake();
 		data.Name = "GuardUnit";
-		data.CellType = MapSpace.Map.CellType.GuardUnit;
 	}
 
 	new void Start()

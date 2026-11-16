@@ -4,18 +4,8 @@ using UnityEngine;
 
 
 
-public class TreeScript : LootHolder, IMyPlaceableOnMap
+public class TreeScript : LootHolder
 {
-	public Vector3 GetPos()
-	{
-		return transform.position;
-	}
-
-	public Vector2Int GetSize()
-	{
-		return new Vector2Int(1, 1);
-	}
-
 	private void Awake()
 	{
 		inventory.FillFully(LootType.Wood);

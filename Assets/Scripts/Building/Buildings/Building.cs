@@ -42,10 +42,6 @@ public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITea
 	}
 
 
-
-	public Map.CellType GetCellID() // Maybe its better to make it interface method (for placeable on map objects like units and buildings)???
-	{ return (Map.CellType)(data.TeamID * 100 + (int)data.CellType); }
-
 	IEnumerator StartBuilding()
 	{
 		SetupSlider();
@@ -70,8 +66,7 @@ public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITea
 		Destroy(gameObject.GetComponent<Movable>());
 		ColorBuilding(t.GetTeamColor());
 
-		Map.FillMapAreaSquare(Map.WorldToMap(GetPos()),
-			GetSize(), Map.CombineTeamCell(GetCellID(), GetTeamID()), Map.MapNames.EnvMap);
+		Map.Layers.BuildingL.FillSquareArea(this, Map.WorldToMap(GetPos()), GetSize());
 		if (this is not MainBuilding)
 		{ StartCoroutine(StartBuilding()); }
 	}
@@ -102,7 +97,6 @@ public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITea
 
 	#region Data transfering
 
-	public Map.CellType GetCellType() => data.CellType;
 	public bool IsPlaced() => data.IsPlaced;
 
 	public int GetTeamID() => data.TeamID;
@@ -120,6 +114,7 @@ public abstract class Building : MonoBehaviour, IConstructable, IHavePanel, ITea
 	public UIManager.PanelNames GetPanelName() => data.PanelName;
 
 	public string GetTeamName() => BuildingManager.GetTeamName(data.TeamID);
+
 
 	#endregion
 }

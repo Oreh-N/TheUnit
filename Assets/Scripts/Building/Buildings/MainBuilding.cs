@@ -15,7 +15,6 @@ public class MainBuilding : Building, ILootContainer
 		data.IsPlaced = true;
 		data.Name = "MainBuilding";
 		data.Size = new Vector2Int(13, 13);
-		data.CellType = MapSpace.Map.CellType.MainBuild;
 		data.PanelName = UIManager.PanelNames.MainBuildingP;
 	}
 

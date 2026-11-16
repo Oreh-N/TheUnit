@@ -53,7 +53,7 @@ public class MapController : MonoBehaviour, IMouseListener {
 		float radius = MainController.Instance.GetTeam(teamID).GetTeamBuildingRadius();
 		var mapPos = Map.WorldToMap(build.transform.position);
 		if (Vector3.Distance(build.transform.position, center) > radius ||
-			!Map.SquareAreaInAllMapsIs(Map.CellType.Empty, mapPos, build.GetSize()))
+			Map.Layers.BuildingL.SquareAreaTypeIs(Layer<Building>.DefaultVal, mapPos, build.GetSize()))
 		{ return false; }
 
 		return true;
@@ -129,6 +129,7 @@ public class MapController : MonoBehaviour, IMouseListener {
 		{
 			if (CanBePlaced(data.CurrBuilding))
 			{ PlaceBuilding(data.CurrBuilding, MainController.Instance.GetTeam(data.CurrBuilding.GetTeamID())); }
+			
 		}
 		
 	}

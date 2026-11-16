@@ -18,4 +18,9 @@ public abstract class LootHolder : MonoBehaviour, ILootContainer
 	{
 		return inventory;
 	}
+
+	public void Interact()
+	{
+		throw new System.NotImplementedException();
+	}
 }

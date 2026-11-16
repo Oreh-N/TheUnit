@@ -3,8 +3,6 @@ using UnityEngine;
 
 namespace MapSpace
 {
-	using MNames = Map.MapNames;
-
 	public class Chunk
 	{
 		ChunkData data;
@@ -75,8 +73,7 @@ namespace MapSpace
 					var cell_pos = new Vector2Int(data.MapPos.x * ChunkData.Size.x + x,
 						data.MapPos.y * ChunkData.Size.y + y);
 
-					if (Map.IsOutOfMap(cell_pos) ||
-						Map.GetCellType(MNames.EnvMap, cell_pos) != ChunkData.TreeType)
+					if (Map.IsOutOfMap(cell_pos) || Map.Layers.TreeL.Get(cell_pos) == false)
 						continue;
 
 					var tree = Creator.CreateTree(Map.MapToWorld(cell_pos));

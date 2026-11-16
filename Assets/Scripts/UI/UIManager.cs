@@ -2,6 +2,7 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using MapSpace;
 
 
 /// <summary>
@@ -219,9 +220,10 @@ public class UIManager : MonoBehaviour, IMouseListener
 	{
 		if (0 == button)
 		{
-			var obj = MouseController.Instance.GetObjOnMousePos();
-			if (obj != null)
-			{ data.CurrentObj = obj.GetComponent<IHavePanel>(); }
+			Unit unit = Map.Layers.UnitL.Get(Map.WorldToMap(MouseController.GetMouseWorldPos()));
+			
+			if (unit)
+			{ data.CurrentObj = unit.GetComponent<IHavePanel>(); }
 			else 
 			{ data.CurrentObj = null; }
 		}

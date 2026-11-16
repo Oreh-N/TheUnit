@@ -1,3 +1,4 @@
+using MapSpace;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -47,11 +48,11 @@ public class UnitSelectionManager : MonoBehaviour, IMouseListener
 	/// </summary>
 	private void TrySelectUnits()
 	{
-		GameObject comp = MouseController.Instance.GetObjOnMousePos();
+		IInteractable comp = MouseController.Instance.GetObjOnMousePos();
 
-		if (comp)
+		if (comp != null)
 		{
-			Unit unit = comp.GetComponent<Unit>();
+			Unit unit = Map.Layers.UnitL.Get(Map.WorldToMap(MouseController.GetMouseWorldPos()));
 
 			// If we are hitting a unit
 			if (unit)

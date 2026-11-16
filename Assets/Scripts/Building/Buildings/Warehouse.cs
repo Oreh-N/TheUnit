@@ -16,7 +16,6 @@ public class Warehouse : Building, ILootContainer
 		//data.Panel = UIManager.Instance.GetPanelWithTag(PubNames.WarehousePanelTag);
 		data.Name = "Warehouse0";
 		data.Size = new Vector2Int(7, 7);
-		data.CellType = MapSpace.Map.CellType.Warehouse;
 	}
 
 	private new void Update()

@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 
@@ -14,7 +16,7 @@ public abstract class Unit : MonoBehaviour, ILootContainer, IHavePanel, ITeamMem
 	}
 
 	public void Start()
-	{ 
+	{
 		data.Health = 100;
 		//GetComponent<Renderer>().material.color = Team_.TeamColor;
 		UnitSelectionManager.Instance.AllUnits.Add(gameObject);
@@ -29,11 +31,13 @@ public abstract class Unit : MonoBehaviour, ILootContainer, IHavePanel, ITeamMem
 			Destroy(GetComponent<Unit>());
 			Destroy(gameObject);
 		}
+
 	}
 
-	public virtual void Setup(int teamId) 
+
+	public virtual void Setup(int teamId)
 	{
-		SetTeam(teamId); 
+		SetTeam(teamId);
 		UnitManager.RegisterUnit(this);
 	}
 
@@ -53,9 +57,6 @@ public abstract class Unit : MonoBehaviour, ILootContainer, IHavePanel, ITeamMem
 		return false;
 	}
 
-	public MapSpace.Map.CellType GetUnitCellID()
-	=> (MapSpace.Map.CellType)(data.TeamID * 100 + (int)data.CellType);
-
 	public abstract void Interact();
 
 	// Fight____________________________________________________________
@@ -71,8 +72,6 @@ public abstract class Unit : MonoBehaviour, ILootContainer, IHavePanel, ITeamMem
 	// _________________________________________________________________
 	public int GetTeamID() => data.TeamID;
 
-	public MapSpace.Map.CellType GetCellType() => data.CellType;
-
 	public Inventory GetTeamInventory() => data.LootCounter;
 
 	public void SetTeam(int teamID)
@@ -83,6 +82,7 @@ public abstract class Unit : MonoBehaviour, ILootContainer, IHavePanel, ITeamMem
 	public UIManager.PanelNames GetPanelName() => data.PanelName;
 
 	public string GetName() => data.Name;
+
 }
 
 public abstract class UnitSelf<TSelf> : Unit where TSelf : Unit { }

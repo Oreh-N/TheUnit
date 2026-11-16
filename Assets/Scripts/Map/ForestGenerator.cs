@@ -6,8 +6,6 @@ using Rnd = UnityEngine.Random;
 
 namespace MapSpace
 {
-	using MNames = Map.MapNames;
-
 	public static class ForestGenerator
 	{
 
@@ -24,9 +22,8 @@ namespace MapSpace
 				for (int z = 0; z < Map.GetSize().y; z++)
 				{
 					var pos = new Vector2Int(x, z);
-					if (Rnd.Range(0, 100) < treeGenFrequency && 
-						Map.CellInAllMapsIs(Map.CellType.Empty, pos))
-					{ Map.TrySetCell(MNames.EnvMap, pos, Map.CellType.Tree); }
+					if (Rnd.Range(0, 100) < treeGenFrequency && Map.Layers.CellEmptyInAllLayers(pos))
+					{ Map.Layers.TreeL.TrySetCell(pos, true); }
 				}
 			}
 			yield return null;
@@ -44,7 +41,7 @@ namespace MapSpace
 			{
 				for (int z = 0; z < Map.GetSize().y; z++)
 				{
-					if (Map.CellIs(Map.CellType.Tree, x, z, MNames.EnvMap))
+					if (Map.Layers.TreeL.Get(new Vector2Int(x, z)) == true)
 					{ Creator.CreateTree(Map.MapToWorld(x, z)); }
 				}
 			}

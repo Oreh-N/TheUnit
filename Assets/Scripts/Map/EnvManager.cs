@@ -1,16 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 
 namespace MapSpace
 {
-	using MNames = Map.MapNames;
-
-
 	// Environment manager
-	public class EnvManager : MonoBehaviour
+	public class EnvManager : MonoBehaviour, IMapEditor
 	{
 		public bool Ready { get; private set; } = false;
 
@@ -58,8 +54,7 @@ namespace MapSpace
 			SignBuildingArea();
 			RoadGenerator.GenRoadsBetweenAllTeams(new Vector2Int(MapData.MapSize[1], MapData.MapSize[0]));
 			yield return StartCoroutine(ForestGenerator.GenVirtForest());
-			Map.RemoveCellTypeFromMap(MNames.EnvMap, 
-				new List<Map.CellType>() { Map.CellType.Road, Map.CellType.BuildArea });
+			Map.Layers.RemoveEnvLayer();
 			Ready = true;
 		}
 
@@ -184,7 +179,7 @@ namespace MapSpace
 				if (t == null) { Debug.Log("Team is NULL"); continue; }
 				Vector2Int coord = Map.WorldToMap(t.GetTeamCenter());
 				int mapRadius = Mathf.RoundToInt(t.GetTeamBuildingRadius() / Map.GetCellSize().x);
-				Map.FillMapAreaCircle(coord, mapRadius, Map.CellType.BuildArea, MNames.EnvMap);
+				Map.Layers.EnvL.FillCircleArea(true, coord, mapRadius);
 			}
 		}
 

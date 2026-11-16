@@ -1,7 +1,7 @@
+using MapSpace;
 using System.Collections.Generic;
 using UnityEngine;
 using Map = MapSpace.Map;
-using MNames = MapSpace.Map.MapNames;
 
 
 [RequireComponent(typeof(Unit))]
@@ -21,9 +21,8 @@ public class UnitMovement : MonoBehaviour, IMouseListener
 
 		if (!TrySetUnitOnMap(pos))
 		{
-			pos = Map.FindNearestCell(pos, Map.CellType.Empty,
-				(nxtCellPos, targetCellT, mapName, _) => { return Map.GetCellType(mapName, nxtCellPos) == targetCellT; },
-				MNames.EnvMap, (dirs) => dirs);
+			pos = Map.Layers.UnitL.FindNearestCell(pos, (nxtCellPos) => { return Map.Layers.CellEmptyInAllLayers(nxtCellPos); },
+				(dirs) => dirs);
 			transform.position = Map.MapToWorld(pos);
 			Debug.Log(pos);
 		}
@@ -39,7 +38,7 @@ public class UnitMovement : MonoBehaviour, IMouseListener
 			_stepPos = FindNextStepPos();
 			TurnTo(_stepPos);
 			TrySetUnitOnMap(_stepPos);
-			Map.CleanCell(MNames.EnvMap, Map.WorldToMap(transform.position));
+			Map.Layers.UnitL.CleanCell(Map.WorldToMap(transform.position));
 
 			if (Map.IsOutOfMap(_stepPos))
 			{
@@ -58,7 +57,7 @@ public class UnitMovement : MonoBehaviour, IMouseListener
 	private bool TrySetUnitOnMap(Vector2Int mapPos)
 	{
 		var unit = GetComponent<Unit>();
-		if (Map.TrySetTeamCell(MNames.EnvMap, mapPos, unit.GetUnitCellID(), unit.GetTeamID())) 
+		if (Map.Layers.UnitL.TrySetCell(mapPos, unit)) 
 			return true;
 		return false;
 	}
@@ -92,9 +91,8 @@ public class UnitMovement : MonoBehaviour, IMouseListener
 			return sortDirs;
 		}
 
-		return Map.FindNearestCell(Map.WorldToMap(transform.position), Map.CellType.Empty,
-			(nxtCellPos, targetCellT, _, ignoreTypes) => { return Map.CellInAllMapsIs(targetCellT, nxtCellPos, ignoreTypes); },
-			MNames.Invalid, DirHeuristicSort);
+		return Map.Layers.UnitL.FindNearestCell(Map.WorldToMap(transform.position), 
+			(nxtCellPos) => { return Map.Layers.CellEmptyInAllLayers(nxtCellPos); }, DirHeuristicSort);
 	}
 
 	private void MoveTo(Vector2Int nxtPos)
@@ -123,11 +121,6 @@ public class UnitMovement : MonoBehaviour, IMouseListener
 		_findNextStepPos = true;
 	}
 
-	private bool CellIsEmpty(Vector2Int pos)
-	{
-		return Map.CellInAllMapsIs(Map.CellType.Empty, pos);
-	}
-
 	private void FindTargetPosition()
 	{
 		var pos = MouseController.GetMouseWorldPos();
@@ -136,8 +129,7 @@ public class UnitMovement : MonoBehaviour, IMouseListener
 			UnitSelectionManager.Instance.UnitsSelected.Contains(gameObject) &&
 			Vector3.zero != pos)
 		{
-			if (Map.IsOutOfMap(pos) || 
-				!CellIsEmpty(Map.WorldToMap(pos)))
+			if (Map.IsOutOfMap(pos) || !Map.Layers.CellEmptyInAllLayers(Map.WorldToMap(pos)))
 			{ return; }
 
 			if (UnitSelectionManager.Instance.UnitsSelected.Count > 1)

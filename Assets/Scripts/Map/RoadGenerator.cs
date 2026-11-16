@@ -4,9 +4,6 @@ using UnityEngine;
 
 namespace MapSpace
 {
-	using MNames = Map.MapNames;
-
-
 	/// <summary>
 	/// Simple road generator. Doesn't see obstacles. Not optimized. 
 	/// Call only at the very beggining of the game, because taking too much time.
@@ -98,11 +95,11 @@ namespace MapSpace
 				}
 		}
 
-		static public void SetRoadOnPosition(Vector2Int coord)
+		static public void SetRoadOnPosition(Vector2Int pos)
 		{
-			if (Map.IsOutOfMap(coord)) return;
+			if (Map.IsOutOfMap(pos)) return;
 
-			Map.TrySetCell(MNames.EnvMap, coord, Map.CellType.Road);
+			Map.Layers.EnvL.TrySetCell(pos, true);
 		}
 	}
 }

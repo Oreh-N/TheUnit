@@ -42,13 +42,10 @@ public class MouseController : MonoBehaviour
 	void LeftClick()
 	{
 		InformListeners(0);
+		IInteractable interactObj = GetObjOnMousePos();
 
-		GameObject obj = GetObjOnMousePos();
-
-		if (obj)
+		if (interactObj != null)
 		{
-			var interactObj = obj.GetComponent<IInteractable>();
-
 			if (interactObj != null)
 			{ interactObj.MouseDownAct(); }
 		}
@@ -67,7 +64,7 @@ public class MouseController : MonoBehaviour
 		return Vector3.zero;
 	}
 
-	public GameObject GetObjOnMousePos()
+	public IInteractable GetObjOnMousePos()
 	{
 		Vector3 pos = GetMouseWorldPos();
 		if (Vector3.zero == pos || Map.IsOutOfMap(pos)) { return null; }
