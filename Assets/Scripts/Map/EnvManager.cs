@@ -51,8 +51,9 @@ namespace MapSpace
 
 		IEnumerator Initialize()
 		{
-			SignBuildingArea();
-			RoadGenerator.GenRoadsBetweenAllTeams(new Vector2Int(MapData.MapSize[1], MapData.MapSize[0]));
+			yield return StartCoroutine(SignBuildingArea());
+			yield return StartCoroutine(RoadGenerator.GenRoadsBetweenAllTeams
+			(new Vector2Int(MapData.MapSize[1], MapData.MapSize[0])));
 			yield return StartCoroutine(ForestGenerator.GenVirtForest());
 			Map.Layers.RemoveEnvLayer();
 			Ready = true;
@@ -171,7 +172,7 @@ namespace MapSpace
 		}
 
 
-		private void SignBuildingArea()
+		private IEnumerator SignBuildingArea()
 		{
 			IReadOnlyCollection<IReadOnlyTeam> ts = MainController.Instance.GetAllTeams();
 			foreach (Team t in ts)
@@ -179,7 +180,7 @@ namespace MapSpace
 				if (t == null) { Debug.Log("Team is NULL"); continue; }
 				Vector2Int coord = Map.WorldToMap(t.GetTeamCenter());
 				int mapRadius = Mathf.RoundToInt(t.GetTeamBuildingRadius() / Map.GetCellSize().x);
-				Map.Layers.EnvL.FillCircleArea(true, coord, mapRadius);
+				yield return StartCoroutine(Map.Layers.EnvL.FillCircleArea(true, coord, mapRadius));
 			}
 		}
 

@@ -4,7 +4,7 @@ using UnityEngine.Profiling;
 
 class MemoryMonitor : MonoBehaviour
 {
-	const long MemoryLimitBytes = 1024 * 1024 * 1500L;  // 1.5
+	const long MemoryLimitBytes = 1024 * 1024 * 1500L;  // 1.5 GB
 	bool _quit = false;
 	float _checkTime = 0.5f;
 	float _timer = 0;
@@ -33,7 +33,7 @@ class MemoryMonitor : MonoBehaviour
 		}
 		if (totalAllocated > MemoryLimitBytes)
 		{
-			Debug.Log($"Memory limit exceeded: {totalAllocated / (1024 * 1024)} MB");
+			Debug.Log($"Memory limit exceeded: {totalAllocated / (1024 * 1024)} MB. Exiting.");
 			_quit = true;
 		}
 

@@ -53,7 +53,7 @@ public class MapController : MonoBehaviour, IMouseListener {
 		float radius = MainController.Instance.GetTeam(teamID).GetTeamBuildingRadius();
 		var mapPos = Map.WorldToMap(build.transform.position);
 		if (Vector3.Distance(build.transform.position, center) > radius ||
-			Map.Layers.BuildingL.SquareAreaTypeIs(Layer<Building>.DefaultVal, mapPos, build.GetSize()))
+			Map.Layers.BuildingL.SquareAreaTypeIs(Layer<Building>.EmptyCell, mapPos, build.GetSize()))
 		{ return false; }
 
 		return true;

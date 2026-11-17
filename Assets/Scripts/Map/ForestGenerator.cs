@@ -25,8 +25,8 @@ namespace MapSpace
 					if (Rnd.Range(0, 100) < treeGenFrequency && Map.Layers.CellEmptyInAllLayers(pos))
 					{ Map.Layers.TreeL.TrySetCell(pos, true); }
 				}
+				yield return null;
 			}
-			yield return null;
 		}
 
 		public static void GenWholeMapForest(GameObject treePrefab)

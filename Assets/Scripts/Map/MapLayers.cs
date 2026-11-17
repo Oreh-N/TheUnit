@@ -28,10 +28,10 @@ namespace MapSpace
 
 		public bool CellEmptyInAllLayers(Vector2Int pos)
 		{
-			return	LootL.Get(pos) == Layer<ILootContainer>.DefaultVal ||
-					BuildingL.Get(pos) == Layer<Building>.DefaultVal ||
-					TreeL.Get(pos) == Layer<bool>.DefaultVal ||
-					UnitL.Get(pos) == Layer<Unit>.DefaultVal;
+			return	LootL.Get(pos) == Layer<ILootContainer>.EmptyCell ||
+					BuildingL.Get(pos) == Layer<Building>.EmptyCell ||
+					TreeL.Get(pos) == Layer<bool>.EmptyCell ||
+					UnitL.Get(pos) == Layer<Unit>.EmptyCell;
 		}
 
 		public static List<Vector2Int> GetSquareAreaPoints(Vector2Int center, Vector2Int size)
@@ -65,20 +65,20 @@ namespace MapSpace
 
 public class Layer<T>
 {
-	T[,] l = new T[Map.GetSize()[0], Map.GetSize()[1]];
-	public static readonly T DefaultVal = default;
+	T[,] l = new T[GetSize()[0], GetSize()[1]];
+	public static readonly T EmptyCell = default;
 
 
 	public T Get(Vector2Int pos) { return l[pos.x, pos.y]; }
 
 	public bool IsEmpty(Vector2Int pos)
-	{ return l[pos.x, pos.y].Equals(DefaultVal); }
+	{ return l[pos.x, pos.y].Equals(EmptyCell); }
 
 	public bool TrySetCell(Vector2Int pos, T newCell)
 	{
-		if (Map.IsOutOfMap(pos) || l[pos.x, pos.y].Equals(DefaultVal))
+		if (IsOutOfMap(pos) || l[pos.x, pos.y].Equals(EmptyCell))
 			return false;
-		if (l[pos.x, pos.y].Equals(DefaultVal))
+		if (l[pos.x, pos.y].Equals(EmptyCell))
 		{
 			l[pos.x, pos.y] = newCell;
 			return true;
@@ -86,7 +86,7 @@ public class Layer<T>
 		return false;
 	}
 	public void CleanCell(Vector2Int pos)
-	{ l[pos.x, pos.y] = DefaultVal; }
+	{ l[pos.x, pos.y] = EmptyCell; }
 
 	public void Reset() { l = new T[Map.GetSize()[0], Map.GetSize()[1]]; }
 
@@ -109,16 +109,20 @@ public class Layer<T>
 		{ l[p.x, p.y] = filling; }
 	}
 
-	void AddNearbyCellsToQueue(ref Queue<Vector2Int> queue, Vector2Int currCoords, List<Vector2Int> visited = null)
+	void AddNearbyCellsToQueue(ref Queue<Vector2Int> queue, Vector2Int currCoords, List<Vector2Int> visited)
 	{
 		List<int> range = new List<int>() { -1, 0, 1 };
 		foreach (int i in range)
 		{
 			foreach (int j in range)
 			{
-				if (i == 0 && j == 0) continue;
+				if (i == 0 && j == 0) continue;	// skip current position
+
 				Vector2Int newCoords = new Vector2Int(currCoords.x + i, currCoords.y + j);
-				if (Map.IsOutOfMap(newCoords) || (visited != null && visited.Contains(newCoords))) continue;
+				if (visited.Contains(newCoords) ||
+					queue.Contains(newCoords) ||
+					IsOutOfMap(newCoords)) 
+					continue;
 				queue.Enqueue(newCoords);
 			}
 		}
@@ -130,22 +134,26 @@ public class Layer<T>
 	/// <param name="centerCoords"> - coordinates of the center of the area that need to be filled</param>
 	/// <param name="radius"> - translate world radius (radius, 0, 0) to map map radius (mapRadius, 0) with WorldToMap method</param>
 	/// <param name="filling"> - cell type which will fill the area</param>
-	public void FillCircleArea(T filling, Vector2Int centerCoords, int radius)
+	public IEnumerator FillCircleArea(T filling, Vector2Int centerCoords, int radius)
 	{
-		l[centerCoords.x, centerCoords.y] = filling;
 		Queue<Vector2Int> toFill = new Queue<Vector2Int>();
-		AddNearbyCellsToQueue(ref toFill, centerCoords);
+		toFill.Enqueue(centerCoords);
+		List<Vector2Int> visited = new List<Vector2Int>();
+		AddNearbyCellsToQueue(ref toFill, centerCoords, visited);
 
 		while (toFill.Count > 0)
 		{
 			var currCell = toFill.Dequeue();
 			int dx = currCell.x - centerCoords.x;
 			int dy = currCell.y - centerCoords.y;
-			if (dx * dx + dy * dy > radius * radius) continue;
 
-			if (!l[currCell.x, currCell.y].Equals(DefaultVal))
+			if (dx * dx + dy * dy > radius * radius ||
+			!l[currCell.x, currCell.y].Equals(EmptyCell) ) 
 				continue;
-			AddNearbyCellsToQueue(ref toFill, currCell);
+			l[currCell.x, currCell.y] = filling;
+			visited.Add(currCell);
+			AddNearbyCellsToQueue(ref toFill, currCell, visited);
+			yield return null;
 		}
 	}
 
@@ -202,7 +210,7 @@ public class Layer<T>
 	{
 		Queue<Vector2Int> queue = new Queue<Vector2Int>();
 		List<Vector2Int> visited = new List<Vector2Int>();
-		AddNearbyCellsToQueue(ref queue, centerCoords);
+		AddNearbyCellsToQueue(ref queue, centerCoords, visited);
 
 		while (queue.Count > 0)
 		{
@@ -212,7 +220,7 @@ public class Layer<T>
 			int dy = currCell.y - centerCoords.y;
 			if (dx * dx + dy * dy > radius * radius) continue;
 
-			if (!l[currCell.x, currCell.y].Equals(DefaultVal))
+			if (l != null && !l[currCell.x, currCell.y].Equals(EmptyCell))
 				return currCell;
 
 			AddNearbyCellsToQueue(ref queue, currCell, visited);

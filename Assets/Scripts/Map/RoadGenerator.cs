@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +17,7 @@ namespace MapSpace
 		/// <summary>
 		/// Generates roads from each base to the center of the map.
 		/// </summary>
-		public static void GenRoadsBetweenAllTeams(Vector2Int map_size)
+		public static IEnumerator GenRoadsBetweenAllTeams(Vector2Int map_size)
 		{
 			var mapCenter = new Vector2Int(map_size.x / 2, map_size.y / 2);
 			IReadOnlyCollection<IReadOnlyTeam> ts = MainController.Instance.GetAllTeams();
@@ -24,7 +25,7 @@ namespace MapSpace
 			{
 				if (t == null) continue;
 				var baseCenter = new Vector2Int((int)t.GetTeamCenter().x, (int)t.GetTeamCenter().z);
-				SignRoadOnMap(baseCenter, mapCenter);
+				yield return SignRoadOnMap(baseCenter, mapCenter);
 			}
 		}
 
@@ -33,7 +34,7 @@ namespace MapSpace
 		/// </summary>
 		/// <param name="start"> - start coordinates on map</param>
 		/// <param name="end"> - end coordinates on map</param>
-		static void SignRoadOnMap(Vector2Int start, Vector2Int end)
+		static IEnumerator SignRoadOnMap(Vector2Int start, Vector2Int end)
 		{
 			List<Vector2Int> road = GetShortestRoad(start, end);
 
@@ -45,6 +46,7 @@ namespace MapSpace
 				);
 				Vector2Int perpDir = new Vector2Int(-dir.y, dir.x);
 				WidenRoad(part, roadWidth, perpDir);
+				yield return null;
 			}
 		}
 
